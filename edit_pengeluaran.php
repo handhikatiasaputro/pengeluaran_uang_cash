@@ -9,16 +9,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kategori_id = $_POST['kategori_id'];
     
     editPengeluaran($id, $jumlah, $tanggal, $kategori_id);
-    header("Location: index.php"); // Ganti dengan nama file utama Anda
+    header("Location: index.php");
     exit;
 }
 
 $id = $_GET['id'];
-$pengeluaran = getPengeluaran();
+// Ambil data pengeluaran berdasarkan id
+$currentPengeluaran = getPengeluaranById($id); // Pastikan fungsi ini ada di 'functions.php' untuk mengambil data pengeluaran berdasarkan ID
 $kategori = getKategori();
-$currentPengeluaran = array_filter($pengeluaran, fn($p) => $p['id'] == $id);
-$currentPengeluaran = reset($currentPengeluaran); // Mendapatkan elemen pertama dari array
 
+// Cek apakah data pengeluaran ditemukan
+if (!$currentPengeluaran) {
+    echo "Data pengeluaran tidak ditemukan.";
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,14 +36,16 @@ $currentPengeluaran = reset($currentPengeluaran); // Mendapatkan elemen pertama 
 <body>
     <h1>Edit Pengeluaran</h1>
     <form method="POST">
-        <input type="hidden" name="id" value="<?= $currentPengeluaran['id'] ?>">
-        <input type="number" name="jumlah" placeholder="Jumlah" value="<?= $currentPengeluaran['jumlah'] ?>" required>
-        <input type="date" name="tanggal" value="<?= $currentPengeluaran['tanggal'] ?>" required>
+        <input type="hidden" name="id" value="<?= isset($currentPengeluaran['id']) ? $currentPengeluaran['id'] : '' ?>">
+        <input type="number" name="jumlah" placeholder="Jumlah" value="<?= isset($currentPengeluaran['jumlah']) ? $currentPengeluaran['jumlah'] : '' ?>" required>
+        <input type="date" name="tanggal" value="<?= isset($currentPengeluaran['tanggal']) ? $currentPengeluaran['tanggal'] : '' ?>" required>
         
         <select name="kategori_id" required>
             <option value="">Pilih Kategori</option>
             <?php foreach ($kategori as $kat): ?>
-                <option value="<?= $kat['id'] ?>" <?= $kat['id'] == $currentPengeluaran['kategori_id'] ? 'selected' : '' ?>><?= $kat['nama_kategori'] ?></option>
+                <option value="<?= $kat['id'] ?>" <?= isset($currentPengeluaran['kategori_id']) && $kat['id'] == $currentPengeluaran['kategori_id'] ? 'selected' : '' ?>>
+                    <?= $kat['nama_kategori'] ?>
+                </option>
             <?php endforeach; ?>
         </select>
         

@@ -38,9 +38,12 @@ $kategori = getKategori();
 
     <h2>Tambah Kategori</h2>
     <form method="POST">
-        <input type="text" name="nama_kategori" placeholder="Nama Kategori" required>
+        <input type="text" name="nama_kategori" placeholder="Nama Kategori" required autofocus>
         <button type="submit" name="tambah_kategori">Tambah Kategori</button>
     </form>
+
+    <!-- Tambahkan link menuju kategori_list.php -->
+    <p><a href="kategori_list.php" class="list">Lihat Daftar Kategori</a></p>
 
     <h2>Tambah Pengeluaran</h2>
     <form method="POST">
@@ -88,6 +91,6 @@ $kategori = getKategori();
     $tahun = date('Y');
     $total = totalPengeluaranBulanan($bulan, $tahun);
     ?>
-    <p>Total Pengeluaran Bulan <?= $bulan ?>: <?= number_format($total, 2) ?></p>
+    <p>Total Pengeluaran Bulan <?= $bulan ?>: Rp <?= number_format($total, 2) ?></p>
 </body>
 </html>

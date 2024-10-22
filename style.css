@@ -100,3 +100,12 @@ tr:nth-child(even) td {
 tr:hover td {
     background-color: #eaf3fc;
 }
+
+.list{
+    text-decoration: none;
+    color: #555;
+}
+
+.list:hover{
+    color: blue;
+}

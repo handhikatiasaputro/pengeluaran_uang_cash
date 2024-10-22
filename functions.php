@@ -37,6 +37,15 @@ function getKategori() {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
+function getPengeluaranById($id) {
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM pengeluaran WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_assoc();
+}
+
+
 // Fungsi untuk menghitung total pengeluaran bulanan
 function totalPengeluaranBulanan($bulan, $tahun) {
     global $conn;
@@ -68,5 +77,31 @@ function hapusPengeluaran($id) {
     $stmt->bind_param("i", $id);
     return $stmt->execute();
 }
+
+// Fungsi untuk mengambil kategori berdasarkan id
+function getKategoriById($id) {
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM kategori WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_assoc();
+}
+
+// Fungsi untuk mengedit kategori
+function editKategori($id, $nama_kategori) {
+    global $conn;
+    $stmt = $conn->prepare("UPDATE kategori SET nama_kategori = ? WHERE id = ?");
+    $stmt->bind_param("si", $nama_kategori, $id);
+    return $stmt->execute();
+}
+
+// Fungsi untuk menghapus kategori
+function hapusKategori($id) {
+    global $conn;
+    $stmt = $conn->prepare("DELETE FROM kategori WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    return $stmt->execute();
+}
+
 
 ?>
